@@ -50,3 +50,7 @@ Syrinx/
   tools/ # tts-fish-s1mini (stub, real fish-speech TODO)
   docs/  # concept, architecture, stack, tools, modes, foundations, production
 ```
+
+## License
+
+[MIT](LICENSE)
