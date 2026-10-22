@@ -1,0 +1,11 @@
+id: music-musicgen-small
+version: small-300M
+backend: audiocraft
+device: gpu
+vram_gb: 4
+tier: tiny
+description: MusicGen-small text-to-music, 30s mono. MIT commercial-safe.
+license: MIT
+model: facebook/musicgen-small
+port: 8104
+endpoint: POST /infer {prompt, seed} -> {audio_ref, transcript}

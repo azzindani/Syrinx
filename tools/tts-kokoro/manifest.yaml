@@ -1,0 +1,10 @@
+id: tts-kokoro-82M
+version: 82M
+backend: onnx
+vram_gb: 2
+tier: tiny
+description: Kokoro 82M fast narration, 54 voices, no clone. Apache-2.0.
+license: Apache-2.0
+model: hexgrad/Kokoro-82M
+port: 8103
+endpoint: POST /infer {prompt, ref_id, seed} -> {audio_ref, transcript}

@@ -1,0 +1,12 @@
+[project]
+name = "tts-kokoro"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "torch>=2.8",
+  "huggingface_hub>=0.24",
+  # live: kokoro>=0.9 (hexgrad/Kokoro-82M weights) or onnxruntime for ONNX voices
+]
+
+[tool.uv]
+package = false

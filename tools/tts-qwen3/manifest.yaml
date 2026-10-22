@@ -1,0 +1,11 @@
+id: tts-qwen3-0.6B
+version: 0.6B
+backend: transformers
+vram_gb: 2.5
+tier: tiny
+description: Qwen3-TTS CustomVoice 0.6B preset speakers + instruct control. Apache-2.0.
+license: Apache-2.0
+model: Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice
+note: CustomVoice = preset speakers, no cloning. Clone lane = Base variant (follow-up).
+port: 8102
+endpoint: POST /infer {prompt, ref_id, seed} -> {audio_ref, transcript}

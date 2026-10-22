@@ -1,0 +1,11 @@
+id: sfx-bark
+version: bark-suno
+backend: transformers
+device: gpu
+vram_gb: 5
+tier: small
+description: Bark speech + non-speech SFX (laughs, ambience). MIT.
+license: MIT
+model: suno/bark
+port: 8105
+endpoint: POST /infer {prompt, seed} -> {audio_ref, transcript}

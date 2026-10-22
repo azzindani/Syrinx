@@ -1,0 +1,22 @@
+data/
+.run/
+core/node_modules/
+core/dist/
+core/web/node_modules/
+core/web/dist/
+tools/*/artifacts/
+tools/*/references/
+tools/*/checkpoints/
+tools/*/fish-speech/
+tools/*/__pycache__/
+*.log
+
+# Added for first push: scratch output, datasets, nested clones, caches.
+tmp/
+samples/librispeech/
+*.tar.gz
+tools/tts-cpm2/llama-omni/
+__pycache__/
+*.pyc
+*:Zone.Identifier
+.env

@@ -1,0 +1,12 @@
+id: tts-cpm2
+version: 2.0-gguf-q8
+backend: transformers
+device: gpu
+vram_gb: 3
+tier: small
+description: CPM2-class 2B GGUF Q8_0, 30 langs, 48kHz, controllable clone. Apache-2.0.
+license: Apache-2.0
+model: DennisHuang648/VoxCPM2-GGUF (BaseLM-Q8_0 + Acoustic-F16)
+port: 8106
+endpoint: POST /infer {prompt, ref_id, seed} -> {audio_ref, transcript}
+note: vram 3GB is an estimate for the GGUF CUDA path; calibrate on first live run.

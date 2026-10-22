@@ -1,0 +1,144 @@
+# Core local stack (stub mode, no weights needed).
+#   docker compose up --build -d   # core :3001, fish :8101, qwen :8102,
+#                                  # music :8104, sfx :8105, cpm2 :8106
+#   bash scripts/docker-e2e.sh     # gates the running stack (same ports)
+# Live GPU swap (weights + real infer): set target: live on the sidecar
+# you want real, add checkpoint mounts + *_CKPT + CORE_STRICT=1, then
+# `docker compose up --build <svc>`. See docs/live-runbook.md.
+name: core
+
+services:
+  fish:
+    build:
+      context: ./tools/tts-fish-s1mini
+      target: stub
+    image: tts-fish:stub
+    ports:
+      - "8101:8101"
+    environment:
+      BIND: "0.0.0.0"
+      FISH_PORT: "8101"
+    volumes:
+      - ./data/fish-artifacts:/srv/artifacts
+      - ./data/fish-refs:/srv/references
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  qwen:
+    build:
+      context: ./tools/tts-qwen3
+      target: stub
+    image: tts-qwen:stub
+    ports:
+      - "8102:8102"
+    environment:
+      BIND: "0.0.0.0"
+      QWEN_PORT: "8102"
+    volumes:
+      - ./data/qwen-artifacts:/srv/artifacts
+      - ./data/qwen-refs:/srv/references
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  music:
+    build:
+      context: ./tools/music-musicgen-small
+      target: stub
+    image: music:stub
+    ports:
+      - "8104:8104"
+    environment:
+      BIND: "0.0.0.0"
+      MUSIC_PORT: "8104"
+    volumes:
+      - ./data/music-artifacts:/srv/artifacts
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  sfx:
+    build:
+      context: ./tools/sfx-bark
+      target: stub
+    image: sfx:stub
+    ports:
+      - "8105:8105"
+    environment:
+      BIND: "0.0.0.0"
+      BARK_PORT: "8105"
+    volumes:
+      - ./data/sfx-artifacts:/srv/artifacts
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  cpm2:
+    build:
+      context: ./tools/tts-cpm2
+      target: stub
+    image: tts-cpm2:stub
+    ports:
+      - "8106:8106"
+    environment:
+      BIND: "0.0.0.0"
+      CPM_PORT: "8106"
+    volumes:
+      - ./data/cpm2-artifacts:/srv/artifacts
+      - ./data/cpm2-refs:/srv/references
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  core:
+    build:
+      context: ./core
+    image: core:latest
+    ports:
+      - "3001:3001"
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "3001"
+      DATA_PATH: /data/jobs.db
+      # Stubs use zero VRAM: bypass the shared-GPU wait gate.
+      # Remove when a sidecar runs target: live with real weights.
+      CORE_GPU_WAIT: "0"
+      FISH_URL: http://fish:8101
+      QWEN_URL: http://qwen:8102
+      MUSIC_URL: http://music:8104
+      SFX_URL: http://sfx:8105
+      CPM_URL: http://cpm2:8106
+    volumes:
+      - ./data:/data
+    depends_on:
+      fish:
+        condition: service_healthy
+      qwen:
+        condition: service_healthy
+      music:
+        condition: service_healthy
+      sfx:
+        condition: service_healthy
+      cpm2:
+        condition: service_healthy

@@ -1,0 +1,10 @@
+id: tts-fish-s1mini
+version: s1-mini-0.5B
+backend: transformers
+vram_gb: 5
+tier: small
+description: FishAudio S1-mini 0.5B zero-shot clone, 13 langs. Flagship v1.
+license: CC-BY-NC-SA-4.0
+model: fishaudio/s1-mini
+port: 8101
+endpoint: POST /infer {prompt, ref_id, seed} -> {audio_ref, transcript}

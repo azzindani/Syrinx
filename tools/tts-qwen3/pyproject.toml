@@ -1,0 +1,13 @@
+[project]
+name = "tts-qwen3"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "torch>=2.8",
+  "torchaudio>=2.8",
+  "huggingface_hub>=0.24",
+  # live: qwen-tts (Qwen3TTSModel, CustomVoice preset speakers)
+]
+
+[tool.uv]
+package = false
